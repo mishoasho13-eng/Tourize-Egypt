@@ -1665,18 +1665,30 @@ function closeLightbox() { document.getElementById('lightbox').classList.remove(
 // ============================================================
 // MENU
 // ============================================================
-function openMenu() { document.getElementById('sideMenu').classList.add('active'); document.querySelector('.side-menu-overlay').classList.add('active'); }
-function closeMenu() { document.getElementById('sideMenu').classList.remove('active'); document.querySelector('.side-menu-overlay').classList.remove('active'); }
-
 function renderCustomPagesMenu() {
   const container = document.getElementById('customPagesMenu');
-  container.innerHTML = customPages.map(p => `
-    <a href="#" class="menu-item" onclick="showCustomPage('${p.id}'); closeMenu(); return false;">
-      <i class="${p.icon||'fas fa-file'}"></i><span>${p.title}</span>
-    </a>
-  `).join('');
+
+  // تأكد إن العنصر موجود
+  if (!container) return;
+
+  // لو مفيش بيانات، سيب القديم زي ما هو
+  if (!Array.isArray(customPages) || customPages.length === 0) {
+    console.warn("customPages is empty or undefined");
+    return;
+  }
+
+  if (typeof customPages === "undefined" || !Array.isArray(customPages) || customPages.length === 0) {
+  console.warn("customPages مش موجودة - سايب المحتوى زي ما هو");
+  return;
 }
 
+container.innerHTML = customPages.map(p => `
+  <a href="#" class="menu-item" onclick="showCustomPage('${p.id}'); closeMenu(); return false;">
+    <i class="${p.icon || 'fas fa-file'}"></i>
+    <span>${p.title || 'بدون عنوان'}</span>
+  </a>
+`).join('');
+}
 // ============================================================
 // SEARCH
 // ============================================================
