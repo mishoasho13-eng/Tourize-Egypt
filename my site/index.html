@@ -2684,29 +2684,75 @@ function updateActiveNav(page) {
   const links = document.querySelectorAll('.header-nav-link');
   if (map[page] !== undefined && links[map[page]]) links[map[page]].classList.add('active-nav');
 }
-function showHome() { hideAllPages(); document.getElementById('homePage').classList.add('active'); window.scrollTo(0,0); previousPage='home'; updateActiveNav('home'); }
+// ── History API Navigation ───────────────────────────────────
+let _isPopState = false;
+
+function _pushState(state) {
+  if (_isPopState) return;
+  history.pushState(state, '');
+}
+
+window.addEventListener('popstate', function(e) {
+  _isPopState = true;
+  const p = e.state && e.state.page;
+  if      (p === 'home')        showHome();
+  else if (p === 'hotels')      showHotelsDetail();
+  else if (p === 'reviews')     showReviews();
+  else if (p === 'search')      showSearch();
+  else if (p === 'booking')     showBooking();
+  else if (p === 'articles')    showArticles();
+  else if (p === 'hotelDetail') showHotelFullDetail(e.state.id, e.state.name);
+  else if (p === 'place')       showPlaceDetail(e.state.id);
+  else                          showHome();
+  _isPopState = false;
+});
+// ─────────────────────────────────────────────────────────────
+
+function showHome() {
+  hideAllPages();
+  document.getElementById('homePage').classList.add('active');
+  window.scrollTo(0,0); previousPage='home'; updateActiveNav('home');
+  _pushState({page:'home'});
+}
 function scrollToPlaces() { document.getElementById('placesSection').scrollIntoView({behavior:'smooth'}); }
 function showHotels() { showHotelsDetail(); }
-function showHotelsDetail() { hideAllPages(); document.getElementById('hotelsDetailPage').classList.add('active'); window.scrollTo(0,0); renderHotelsCategoriesFromData(); previousPage='hotels'; updateActiveNav('hotels'); }
-function showBooking() { previousPage = getCurrentPage(); hideAllPages(); document.getElementById('bookingPage').classList.add('active'); window.scrollTo(0,0); updateActiveNav('booking'); }
+function showHotelsDetail() {
+  hideAllPages();
+  document.getElementById('hotelsDetailPage').classList.add('active');
+  window.scrollTo(0,0); renderHotelsCategoriesFromData(); previousPage='hotels'; updateActiveNav('hotels');
+  _pushState({page:'hotels'});
+}
+function showBooking() {
+  previousPage = getCurrentPage();
+  hideAllPages();
+  document.getElementById('bookingPage').classList.add('active');
+  window.scrollTo(0,0); updateActiveNav('booking');
+  _pushState({page:'booking'});
+}
 function showBookingWithHotel() {
   const name = document.getElementById('fullHotelName').textContent;
   showBooking();
   document.getElementById('hotelNameInput').value = name;
 }
-function showReviews() { hideAllPages(); document.getElementById('reviewsPage').classList.add('active'); window.scrollTo(0,0); renderReviewsPage(); previousPage='reviews'; updateActiveNav('reviews'); }
-function showSearch() { hideAllPages(); document.getElementById('searchPage').classList.add('active'); window.scrollTo(0,0); previousPage='search'; updateActiveNav('search'); }
+function showReviews() {
+  hideAllPages();
+  document.getElementById('reviewsPage').classList.add('active');
+  window.scrollTo(0,0); renderReviewsPage(); previousPage='reviews'; updateActiveNav('reviews');
+  _pushState({page:'reviews'});
+}
+function showSearch() {
+  hideAllPages();
+  document.getElementById('searchPage').classList.add('active');
+  window.scrollTo(0,0); previousPage='search'; updateActiveNav('search');
+  _pushState({page:'search'});
+}
 function getCurrentPage() {
   if (document.getElementById('hotelFullDetailPage').classList.contains('active')) return 'hotelDetail';
   if (document.getElementById('hotelsDetailPage').classList.contains('active')) return 'hotels';
   if (document.getElementById('reviewsPage').classList.contains('active')) return 'reviews';
   return 'home';
 }
-function goBack() {
-  if (previousPage === 'hotelDetail') showHotelsDetail();
-  else if (previousPage === 'hotels') showHotelsDetail();
-  else showHome();
-}
+function goBack() { history.back(); }
 function showCustomPage(id) {
   hideAllPages();
   const page = customPages.find(p => p.id === id);
@@ -2838,6 +2884,7 @@ function showHotelFullDetail(id, name) {
   `;
   updatePageLanguage();
   window.scrollTo(0,0);
+  _pushState({page:'hotelDetail', id:id, name:name});
 }
 
 // ============================================================
@@ -2922,6 +2969,7 @@ function showPlaceDetail(placeId) {
   `;
   updatePageLanguage();
   window.scrollTo(0,0);
+  _pushState({page:'place', id:placeId});
 }
 
 function renderPlacesSlider() {
@@ -2978,12 +3026,13 @@ function getStars(cat) {
 // ============================================================
 // FAQ FUNCTIONS
 // ============================================================
-function showArticles() { updateActiveNav('articles');
+function showArticles() {
+  updateActiveNav('articles');
   hideAllPages();
   document.getElementById('articlesPage').classList.add('active');
   renderArticlesList();
-  window.scrollTo(0,0);
-  previousPage='home';
+  window.scrollTo(0,0); previousPage='articles';
+  _pushState({page:'articles'});
 }
 
 function renderFaqSection() {
