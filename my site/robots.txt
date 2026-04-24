@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tourize-egypt-go.netlify.app/sitemap.xml
