@@ -698,7 +698,7 @@ if(typeof globalPriceNote!=="undefined"){globalPriceNote="ملاحظة : الا�
           <div class="hotel-card-back-stars">★★</div>
           <div class="hotel-card-back-name">Camps</div>
           <div class="hotel-card-back-desc">3 فنادق</div>
-          <button class="hotel-card-back-btn" onclick="event.stopPropagation();showHotelsDetail()">عرض الفنادق</button>
+          <button class="hotel-card-back-btn" onclick="event.stopPropagation();showHotelsDetail('camps')">عرض الفنادق</button>
         </div>
       </div>
     </div>
@@ -712,7 +712,7 @@ if(typeof globalPriceNote!=="undefined"){globalPriceNote="ملاحظة : الا�
           <div class="hotel-card-back-stars">★★★</div>
           <div class="hotel-card-back-name">فنادق الممشى</div>
           <div class="hotel-card-back-desc">5 فنادق</div>
-          <button class="hotel-card-back-btn" onclick="event.stopPropagation();showHotelsDetail()">عرض الفنادق</button>
+          <button class="hotel-card-back-btn" onclick="event.stopPropagation();showHotelsDetail('promenade')">عرض الفنادق</button>
         </div>
       </div>
     </div>
@@ -726,7 +726,7 @@ if(typeof globalPriceNote!=="undefined"){globalPriceNote="ملاحظة : الا�
           <div class="hotel-card-back-stars">★★★★</div>
           <div class="hotel-card-back-name">فنادق اللاجونا</div>
           <div class="hotel-card-back-desc">3 فنادق</div>
-          <button class="hotel-card-back-btn" onclick="event.stopPropagation();showHotelsDetail()">عرض الفنادق</button>
+          <button class="hotel-card-back-btn" onclick="event.stopPropagation();showHotelsDetail('laguna')">عرض الفنادق</button>
         </div>
       </div>
     </div>
@@ -740,7 +740,7 @@ if(typeof globalPriceNote!=="undefined"){globalPriceNote="ملاحظة : الا�
           <div class="hotel-card-back-stars">★★★★★</div>
           <div class="hotel-card-back-name">VIP</div>
           <div class="hotel-card-back-desc">2 فنادق</div>
-          <button class="hotel-card-back-btn" onclick="event.stopPropagation();showHotelsDetail()">عرض الفنادق</button>
+          <button class="hotel-card-back-btn" onclick="event.stopPropagation();showHotelsDetail('vip')">عرض الفنادق</button>
         </div>
       </div>
     </div></div>
@@ -2741,10 +2741,16 @@ function showHome() {
 }
 function scrollToPlaces() { document.getElementById('placesSection').scrollIntoView({behavior:'smooth'}); }
 function showHotels() { showHotelsDetail(); }
-function showHotelsDetail() {
+function showHotelsDetail(scrollToCat) {
   hideAllPages();
   document.getElementById('hotelsDetailPage').classList.add('active');
   window.scrollTo(0,0); renderHotelsCategoriesFromData(); previousPage='hotels'; updateActiveNav('hotels');
+  if (scrollToCat) {
+    requestAnimationFrame(() => {
+      const catEl = document.querySelector('.hotel-category[data-cat="' + scrollToCat + '"]');
+      if (catEl) catEl.scrollIntoView({behavior: 'smooth', block: 'start'});
+    });
+  }
   _pushState({page:'hotels'});
 }
 function showBooking() {
@@ -2810,7 +2816,7 @@ function handleCardClick(card, id, name) {
       return;
     }
   }
-  if (id === 'hotelsDetail') { showHotelsDetail(); return; }
+  if (id === 'hotelsDetail') { showHotelsDetail(card.dataset.previewCat); return; }
   if (id && name) { showHotelFullDetail(id, name); }
 }
 
@@ -3031,7 +3037,7 @@ let hotelsDB = [{"id":"camp_balsam","name":"Camp Balsam","cat":"camps","img":"ht
 let reviewsDB = [{"id":"r_1776690240223","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.29.02%20PM%20(1).jpeg"},{"id":"r_1776690266393","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.29.02%20PM%20(3).jpeg"},{"id":"r_1776690309923","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.29.02%20PM%20(2).jpeg"},{"id":"r_1776690322869","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.29.02%20PM.jpeg"},{"id":"r_1776690339160","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.29.01%20PM.jpeg"},{"id":"r_1776690353553","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.29.01%20PM%20(6).jpeg"},{"id":"r_1776690365630","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.29.01%20PM%20(5).jpeg"},{"id":"r_1776690401988","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.29.01%20PM%20(4).jpeg"},{"id":"r_1776690420998","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.29.01%20PM%20(3).jpeg"},{"id":"r_1776690433916","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.29.01%20PM%20(1).jpeg"},{"id":"r_1776690444198","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.29.00%20PM.jpeg"},{"id":"r_1776690458136","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.29.00%20PM%20(5).jpeg"},{"id":"r_1776690493998","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.29.00%20PM%20(4).jpeg"},{"id":"r_1776690524361","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.29.00%20PM%20(3).jpeg"},{"id":"r_1776690542440","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.29.00%20PM%20(2).jpeg"},{"id":"r_1776690553275","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.29.00%20PM%20(1).jpeg"},{"id":"r_1776690562782","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.28.59%20PM.jpeg"},{"id":"r_1776690575419","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.28.59%20PM%20(5).jpeg"},{"id":"r_1776690585523","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.28.59%20PM%20(4).jpeg"},{"id":"r_1776690605521","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.28.59%20PM%20(3).jpeg"},{"id":"r_1776690618097","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.28.59%20PM%20(2).jpeg"},{"id":"r_1776690636044","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.28.59%20PM%20(1).jpeg"},{"id":"r_1776690688160","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.28.58%20PM.jpeg"},{"id":"r_1776690699387","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.28.58%20PM%20(6).jpeg"},{"id":"r_1776690709699","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.28.58%20PM%20(5).jpeg"},{"id":"r_1776690722650","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.28.58%20PM%20(4).jpeg"},{"id":"r_1776690735562","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.28.58%20PM%20(3).jpeg"},{"id":"r_1776690775779","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.28.58%20PM%20(2).jpeg"},{"id":"r_1776690787334","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.28.57%20PM.jpeg"},{"id":"r_1776690799792","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.28.57%20PM%20(5).jpeg"},{"id":"r_1776690811752","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.28.57%20PM%20(4).jpeg"},{"id":"r_1776690822433","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.28.57%20PM%20(3).jpeg"},{"id":"r_1776690833341","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.28.57%20PM%20(2).jpeg"},{"id":"r_1776690844742","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.28.57%20PM%20(1).jpeg"},{"id":"r_1776690861616","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.28.56%20PM.jpeg"},{"id":"r_1776690905164","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.28.56%20PM%20(6).jpeg"},{"id":"r_1776690932317","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.28.56%20PM%20(5).jpeg"},{"id":"r_1776690954778","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.28.56%20PM%20(4).jpeg"},{"id":"r_1776690964698","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.28.56%20PM%20(3).jpeg"},{"id":"r_1776690976728","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.28.56%20PM%20(1).jpeg"},{"id":"r_1776690987208","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.28.55%20PM.jpeg"},{"id":"r_1776690995896","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.28.55%20PM%20(2).jpeg"},{"id":"r_1776691139905","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.28.55%20PM%20(1).jpeg"},{"id":"r_1776691151660","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.28.54%20PM.jpeg"},{"id":"r_1776691162997","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.28.53%20PM%20(1).jpeg"},{"id":"r_1776691171273","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.28.52%20PM.jpeg"},{"id":"r_1776691178702","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.28.51%20PM.jpeg"},{"id":"r_1776691186610","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.28.51%20PM%20(1).jpeg"},{"id":"r_1776691229928","img":"https://raw.githubusercontent.com/mishoasho13-eng/Tourize-Egypt/main/rev/WhatsApp%20Image%202026-04-20%20at%202.14.26%20PM%20(1).jpeg"}];
 
 let customPages = [];
-let globalPriceNote = "ملاحظة : الاسعار المذكورة شهر ٦ 
+let globalPriceNote = "ملاحظة : الاسعار المذكورة شهر ٦ ";
 
 // Apply APP_DATA now that all variables are declared
 _applyAPPDATA();
@@ -3271,7 +3277,7 @@ function renderHotelsPreview() {
           <div class="hotel-card-back-stars">${getStarsStr(cat)}</div>
           <div class="hotel-card-back-name">${catTitleMap[cat]}</div>
           <div class="hotel-card-back-desc">${list.length} فنادق</div>
-          <button class="hotel-card-back-btn" onclick="event.stopPropagation();showHotelsDetail()">عرض الفنادق</button>
+          <button class="hotel-card-back-btn" onclick="event.stopPropagation();showHotelsDetail('${cat}')">عرض الفنادق</button>
         </div>
       </div>
     </div>`;
